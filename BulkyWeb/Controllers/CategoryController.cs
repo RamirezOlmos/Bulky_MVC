@@ -1,5 +1,5 @@
-﻿using BulkyWeb.Data;
-using BulkyWeb.Models;
+﻿using Bulky.DataAccess.Data;
+using Bulky.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BulkyWeb.Controllers
@@ -35,6 +35,7 @@ namespace BulkyWeb.Controllers
 			{
 				_db.Categories.Add(newCategory);
 				_db.SaveChanges();
+				TempData["success"] = "Category created succesfully";
 				return RedirectToAction("Index");
 			}
 			return View();
@@ -62,6 +63,7 @@ namespace BulkyWeb.Controllers
 			{
 				_db.Categories.Update(editedCategory);
 				_db.SaveChanges();
+				TempData["success"] = "Category updated succesfully";
 				return RedirectToAction("Index");
 			}
 			return View();
@@ -87,6 +89,7 @@ namespace BulkyWeb.Controllers
 			if (deleteCategory == null) { return NotFound(); }
 			_db.Categories.Remove(deleteCategory);
 			_db.SaveChanges();
+			TempData["success"] = "Category deleted succesfully";
 			return RedirectToAction("Index");
 		}
 	}
