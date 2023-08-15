@@ -31,28 +31,31 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach (var Product in Model)
+				@foreach (var product in Model)
 				{
 					<tr>
-						<td>@Product.Title</td>
+						<td>@product.Title</td>
 						<td>
-							@Product.ISBN
+							@product.ISBN
 						</td>
 						<td>
-							@Product.ListPrice
+							@product.ListPrice
 						</td>
 						<td>
-							@Product.Author
+							@product.Author
+						</td>
+						<td>
+							@product.Category.Name
 						</td>
 						<td>
 							<div class="w-75 btn-group" role="group">
-								<a asp-controller="Product" asp-action="Upsert"
-								   asp-route-id="@Product.Id"
+								<a asp-controller="product" asp-action="Upsert"
+								   asp-route-id="@product.Id"
 								   class="btn btn-primary mx-2 rounded">
 									<i class="bi bi-pencil-square"></i> Edit
 								</a>
-								<a asp-controller="Product" asp-action="Delete"
-								   asp-route-id="@Product.Id"
+								<a asp-controller="product" asp-action="Delete"
+								   asp-route-id="@product.Id"
 								   class="btn btn-outline-danger mx-2 rounded">
 									<i class="bi bi-trash-fill"></i> Delete
 								</a>
