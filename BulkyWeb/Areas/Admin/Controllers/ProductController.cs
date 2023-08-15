@@ -12,14 +12,19 @@ namespace BulkyWeb.Areas.Admin.Controllers
 	public class ProductController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;
-		public ProductController(IUnitOfWork unitOfWork)
+		private readonly IWebHostEnvironment _webHostEnvironment;
+		public ProductController(IUnitOfWork unitOfWork,
+			IWebHostEnvironment webHostEnvironment)
 		{
 			_unitOfWork = unitOfWork;
+			_webHostEnvironment = webHostEnvironment;
 		}
 
 		public IActionResult Index()
 		{
-			List<Product> objProductList = _unitOfWork.Product.GetAll().ToList();
+			List<Product> objProductList = _unitOfWork.Product
+			.GetAll(includeProperties: "Category")
+			.ToList();
 
 			return View(objProductList);
 		}
@@ -60,7 +65,43 @@ namespace BulkyWeb.Areas.Admin.Controllers
 
 			if (ModelState.IsValid)
 			{
-				_unitOfWork.Product.Add(productVM.Product);
+				string wwwRootPath = _webHostEnvironment.WebRootPath;
+				if (file != null)
+				{
+					string fileName = Guid.NewGuid().ToString() +
+						Path.GetExtension(file.FileName);
+					string productPath = Path.Combine(wwwRootPath, @"images\product");
+
+					if (!string.IsNullOrEmpty(productVM.Product.ImageUrl))
+					{
+						//delete old image
+						var oldImagePath = Path.Combine(wwwRootPath,
+											productVM.Product.ImageUrl.Trim('\\'));
+
+						if (System.IO.File.Exists(oldImagePath))
+						{
+							System.IO.File.Delete(oldImagePath);
+						}
+					}
+
+					using (var fileStream = new FileStream(Path.Combine(productPath,
+						fileName), FileMode.Create))
+					{
+						file.CopyTo(fileStream);
+					}
+
+					productVM.Product.ImageUrl = @"\images\product\" + fileName;
+				}
+
+				if (productVM.Product.Id == 0)
+				{
+					_unitOfWork.Product.Add(productVM.Product);
+				}
+				else
+				{
+					_unitOfWork.Product.Update(productVM.Product);
+
+				}
 				_unitOfWork.Save();
 				TempData["success"] = "Product created succesfully";
 				return RedirectToAction("Index");
