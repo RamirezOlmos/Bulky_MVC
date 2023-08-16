@@ -10,6 +10,7 @@
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 
 	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
 </head>
 <body>
 	<header>
@@ -61,6 +62,8 @@
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="~/js/site.js" asp-append-version="true"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" asp-append-version="true"></script>
 	<script src="https://cdn.tiny.cloud/1/h6h5i2nveqya67wl4c2v70p5g71p8z8y7bh9qwgsf8my1kno/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 	@await RenderSectionAsync("Scripts", required: false)
 </body>
